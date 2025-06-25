@@ -6,7 +6,7 @@ python -m venv venv
 source venv/Scripts/activate 
 ```
 
-
+```
 fastapi_project/
 │
 ├── app/
@@ -17,3 +17,4 @@ fastapi_project/
 │   ├── schemas.py       # Pydantic 스키마
 │
 ├── requirements.txt     # 패키지 의존성 관리
+```
