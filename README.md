@@ -1,11 +1,12 @@
 # ELK-Track
 
-
+가상 환경 실행
 ```
 python -m venv venv
 source venv/Scripts/activate 
 ```
 
+파일 구조
 ```
 fastapi_project/
 │
