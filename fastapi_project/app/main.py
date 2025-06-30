@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-
+import logging, os
 from domain import user_router
 
 app = FastAPI()
@@ -16,5 +16,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to FastAPI!"}
 
 app.include_router(user_router.router)
