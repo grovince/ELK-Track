@@ -29,8 +29,10 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
     # 유저 존재 여부 확인
     user = user_crud.get_user(db, form_data.username)
     
-    # 비밀번호 검증 
+    # 비밀번호 검증 및 실패 로그 기록
     if not user or not pwd_context.verify(form_data.password, user.password):
+        ip = request.client.host if request else 'unknown'
+        logger.warning(f"로그인 실패: {form_data.username}, IP: {ip}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",

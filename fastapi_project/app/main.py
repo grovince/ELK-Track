@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request
 from starlette.middleware.cors import CORSMiddleware
 from datetime import datetime
-import logging, os
 from domain import user_router
 from utils.logger import get_access_logger
 
