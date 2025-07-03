@@ -7,7 +7,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from jose import jwt
 from sqlalchemy.orm import Session
 from starlette import status
-from utils.logger import get_logger
+from utils.logger import get_auth_logger
 from database import get_db
 from domain import user_crud, user_schema
 from domain.user_crud import pwd_context
@@ -23,7 +23,7 @@ router = APIRouter(
 
 @router.post("/login", response_model=user_schema.Token)
 def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(),
-                           db: Session = Depends(get_db), logger: logging.Logger = Depends(get_logger),
+                           db: Session = Depends(get_db), logger: logging.Logger = Depends(get_auth_logger),
                            request: Request = None):
 
     # 유저 존재 여부 확인
