@@ -29,8 +29,9 @@ class RateLimiter:
                 "ip": ip,
                 "path": path,
                 "url": str(request.url),
+                "method": request.method,
                 "count": len(self.requests[key]),
-                "timestamp": current_time
+                "timestamp": current_time,
             })
             return JSONResponse(status_code=429, content={"detail": "Too many requests"})
 
