@@ -37,10 +37,12 @@ async def log_request_info(request: Request, call_next):
         "ip": request.client.host,
         "user_agent": request.headers.get("user-agent", ""),
         "access_time": datetime.now().isoformat(),
-        "url": str(request.url)
+        "url": str(request.url),
+        "method": request.method
     }
-    access_logger.info(log_data)
     response = await call_next(request)
+    log_data["status_code"] = response.status_code
+    access_logger.info(log_data)
     return response
 
 app.middleware("http")(RateLimiter(requests_per_minute=10)) # IP별 요청 횟수 측정 기능 미들웨어 등록
