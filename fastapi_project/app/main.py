@@ -43,4 +43,4 @@ async def log_request_info(request: Request, call_next):
     response = await call_next(request)
     return response
 
-app.middleware("http")(RateLimiter(requests_per_minute=3)) # IP별 요청 횟수 측정 기능 미들웨어 등록
+app.middleware("http")(RateLimiter(requests_per_minute=5)) # IP별 요청 횟수 측정 기능 미들웨어 등록
