@@ -85,8 +85,7 @@ services:
      
   es01:
     depends_on:
-      setup:
-        condition: service_healthy
+      - setup
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     labels:
       co.elastic.logs/module: elasticsearch
@@ -129,8 +128,7 @@ services:
 
   kibana:
    depends_on:
-     es01:
-       condition: service_healthy
+     - es01
    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
    labels:
      co.elastic.logs/module: kibana
@@ -158,3 +156,24 @@ services:
      interval: 10s
      timeout: 10s
      retries: 120
+
+  metricbeat01:
+   depends_on:
+    - es01
+    - kibana
+   image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
+   user: root
+   volumes:
+     - certs:/usr/share/metricbeat/certs
+     - metricbeatdata01:/usr/share/metricbeat/data
+     - "./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro"
+     - "/var/run/docker.sock:/var/run/docker.sock:ro"
+     - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
+     - "/proc:/hostfs/proc:ro"
+     - "/:/hostfs:ro"
+   environment:
+     - ELASTIC_USER=elastic
+     - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+     - ELASTIC_HOSTS=https://es01:9200
+     - KIBANA_HOSTS=http://kibana:5601
+     - LOGSTASH_HOSTS=http://logstash01:9600
